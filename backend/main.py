@@ -19,7 +19,8 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
 
-from engine.anomaly_detector import detect_drift, get_overall_severity
+from engine.anomaly_detector import detect_drift, get_baseline_stats, get_overall_severity
+from engine.demo_overrides import apply_demo_timeline_patch
 from engine.pdf_generator import generate_clinical_report
 from engine.rag_engine import analyze_with_ai, store_patient_history
 from engine.schema_mapper import build_patient_timeline
@@ -90,7 +91,8 @@ def load_patient_data(patient_id: str) -> dict:
     meds_df = pd.read_csv(meds_path)
     patient_meds = meds_df[meds_df["patient_id"] == patient_id].copy()
 
-    return build_patient_timeline(fhir, wearable, patient_meds)
+    timeline = build_patient_timeline(fhir, wearable, patient_meds)
+    return apply_demo_timeline_patch(patient_id, timeline)
 
 
 @app.get("/health")
@@ -111,6 +113,7 @@ def get_timeline(patient_id: str):
               active conditions, active medications, recent labs.
     """
     timeline = load_patient_data(patient_id)
+    timeline["baseline_stats"] = get_baseline_stats(timeline["wearable_timeline"])
     return timeline
 
 

@@ -18,3 +18,8 @@
   color: var(--color-text-secondary);
   margin-top: 8px;
 }
+
+.recharts-wrapper {
+  width: 100% !important;
+  height: 400px !important;
+}

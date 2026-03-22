@@ -94,6 +94,30 @@ def calculate_baseline(
     }
 
 
+def get_baseline_stats(wearable_timeline: List[dict]) -> dict:
+    """
+    Baseline mean per metric plus ±20% band (same threshold as drift detector).
+    Used by the timeline API for chart normal-zone shading.
+    """
+    metrics = [
+        "heart_rate_resting",
+        "hrv",
+        "sleep_efficiency",
+        "spo2",
+    ]
+    stats = {}
+    for metric in metrics:
+        baseline = calculate_baseline(wearable_timeline, metric)
+        if baseline:
+            mean = float(baseline["mean"])
+            stats[metric] = {
+                "mean": round(mean, 1),
+                "zone_low": round(mean * 0.80, 1),
+                "zone_high": round(mean * 1.20, 1),
+            }
+    return stats
+
+
 def get_current_value(
     records: List[dict],
     metric_key: str,

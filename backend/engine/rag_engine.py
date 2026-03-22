@@ -483,6 +483,7 @@ def analyze_with_ai(timeline: dict, alerts: List[dict]) -> dict:
                 "No immediate clinical action needed",
             ],
             "context_sources": ["wearable_timeline"],
+            "evidence_chain": [],
             "monitor_duration_days": 0,
             "ai_model": REASONING_MODEL,
         }
@@ -514,9 +515,38 @@ def analyze_with_ai(timeline: dict, alerts: List[dict]) -> dict:
         "- Always respond in valid JSON."
     )
 
+    risk_level_guide = """
+Risk level guide:
+- LOW: Expected variation, no clinical action needed
+- MODERATE: Monitor closely, prescriber notification if sustained
+- HIGH: Contact healthcare provider within 24 hours
+- EMERGENCY: Seek immediate medical care
+
+CRITICAL for recommendations: Be SPECIFIC. Name the actual drug, test, or action.
+Bad: "Monitor vital signs"
+Good: "Monitor resting HR and HRV daily via wearable for 5 days post-Metformin initiation"
+
+Bad: "Consider lab work"
+Good: "Consider BMP at 2-week follow-up to assess renal function given new Metformin start and reported nausea"
+
+Bad: "Contact doctor if symptoms worsen"
+Good: "Contact prescribing physician if resting HR exceeds 95 bpm on consecutive days — may indicate need to adjust Metformin dose"
+
+Each recommendation must name either a specific vital sign threshold,
+specific medication name, or specific lab test.
+
+Important: If the drift is consistent with a recently started medication
+side effect, classify as MODERATE (not HIGH/EMERGENCY) unless SpO2 < 94%
+or HR > 110 bpm sustained.
+
+Metformin-related autonomic adjustment (elevated resting HR, lower HRV) is
+MODERATE severity when SpO2 is normal and resting HR is under 110 bpm — not HIGH or EMERGENCY."""
+
     user_prompt = f"""Analyze this patient's integrated health data and explain the detected drifts.
 
 {context}
+
+{risk_level_guide}
 
 Respond ONLY with a JSON object in this exact format:
 {{
@@ -525,21 +555,23 @@ Respond ONLY with a JSON object in this exact format:
   "clinical_assessment": "2-3 sentences — what is happening and why, grounded in the data provided",
   "recommendations": ["action 1", "action 2", "action 3"],
   "context_sources": ["list which data sources informed this assessment"],
+  "evidence_chain": [
+    {{
+      "finding": "specific observation e.g. HRV dropped 31.3% over 2 days",
+      "source": "wearable_timeline",
+      "source_label": "Wearable",
+      "relevance": "one phrase why this matters for the assessment"
+    }}
+  ],
   "monitor_duration_days": <integer, how many days to monitor before reassessing>
 }}
 
-Risk level guide:
-- LOW: Expected variation, no clinical action needed
-- MODERATE: Monitor closely, consider contacting prescriber
-- HIGH: Contact healthcare provider within 24 hours
-- EMERGENCY: Seek immediate medical care
-
-Important: If the drift is consistent with a recently started medication
-side effect, classify as MODERATE (not HIGH/EMERGENCY) unless SpO2 < 94%
-or HR > 110 bpm sustained.
-
-Metformin-related autonomic adjustment (elevated resting HR, lower HRV) is
-MODERATE severity when SpO2 is normal and resting HR is under 110 bpm — not HIGH or EMERGENCY."""
+CRITICAL for evidence_chain: Include 3-4 items. Each must be a SPECIFIC fact from
+the data — exact values, exact dates, exact drug names. Never say "elevated vitals" —
+say "HR rose from 63 to 88 bpm over 48h". Never say "medication history" —
+say "Metformin 500mg started 2026-03-19". Source must be exactly one of:
+wearable_timeline, fhir_conditions, medication_log, lab_results.
+Use source_label short labels: Wearable, FHIR, Medications, Labs."""
 
     try:
         response = _get_openai().chat.completions.create(
@@ -562,11 +594,15 @@ MODERATE severity when SpO2 is normal and resting HR is under 110 bpm — not HI
             "clinical_assessment",
             "recommendations",
             "context_sources",
+            "evidence_chain",
             "monitor_duration_days",
         ]
         for field in required:
             if field not in result:
                 raise ValueError(f"Missing field in AI response: {field}")
+
+        if not isinstance(result.get("evidence_chain"), list):
+            result["evidence_chain"] = []
 
         result["ai_model"] = REASONING_MODEL
         result["similar_events_used"] = len(similar_events)
@@ -582,6 +618,7 @@ MODERATE severity when SpO2 is normal and resting HR is under 110 bpm — not HI
             ),
             "recommendations": ["Manual clinical review required"],
             "context_sources": ["error"],
+            "evidence_chain": [],
             "monitor_duration_days": 3,
             "ai_model": REASONING_MODEL,
             "error": str(e),
@@ -594,6 +631,7 @@ MODERATE severity when SpO2 is normal and resting HR is under 110 bpm — not HI
             "clinical_assessment": "Please retry analysis.",
             "recommendations": ["Retry in 60 seconds"],
             "context_sources": [],
+            "evidence_chain": [],
             "monitor_duration_days": 1,
             "ai_model": REASONING_MODEL,
             "error": str(e),

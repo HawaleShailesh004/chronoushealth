@@ -1,3 +1,8 @@
 patient_id,drug_name,dose,unit,frequency,start_date,stop_date,symptom_reported,is_new
 sarah,Metformin,500,mg,twice_daily,2026-03-19,,nausea;elevated_heart_rate,true
 sarah,Lisinopril,10,mg,once_daily,2026-01-05,,mild_dizziness,false
+james,Atorvastatin,40,mg,once_daily,2025-11-10,,none,false
+james,Carvedilol,6.25,mg,twice_daily,2026-03-15,,fatigue;dizziness,true
+priya,Ibuprofen,400,mg,three_times_daily,2026-03-10,,nausea,true
+priya,Omeprazole,20,mg,once_daily,2026-02-01,,none,false
+marcus,Vitamin D,2000,IU,once_daily,2026-01-15,,none,false
