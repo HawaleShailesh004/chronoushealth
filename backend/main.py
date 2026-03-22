@@ -7,6 +7,7 @@ GET  /patient/{id}/timeline          → full unified patient timeline
 GET  /patient/{id}/alerts            → detected anomalies
 POST /patient/{id}/analyze           → AI reasoning (live call)
 GET  /patient/{id}/analyze/cached    → cached AI result (use for demo)
+POST /patient/{id}/report            → PDF clinical summary (bytes)
 """
 
 import json
@@ -16,8 +17,10 @@ from pathlib import Path
 import pandas as pd
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import Response
 
 from engine.anomaly_detector import detect_drift, get_overall_severity
+from engine.pdf_generator import generate_clinical_report
 from engine.rag_engine import analyze_with_ai, store_patient_history
 from engine.schema_mapper import build_patient_timeline
 from ingestion.fhir_parser import parse_patient_fhir
@@ -187,3 +190,31 @@ def get_cached_analysis(patient_id: str):
         "ai_assessment": result,
         "source": "live",
     }
+
+
+@app.post("/patient/{patient_id}/report")
+def get_report(patient_id: str):
+    """
+    Generate and return a PDF clinical summary report.
+    Returns raw PDF bytes with appropriate headers.
+    """
+    timeline = load_patient_data(patient_id)
+    alerts = detect_drift(timeline["wearable_timeline"])
+
+    cache_path = _BACKEND / "data" / f"{patient_id}_demo_cache.json"
+    if cache_path.is_file():
+        with open(cache_path, encoding="utf-8") as f:
+            cached = json.load(f)
+        ai_result = cached.get("ai_result") or {}
+    else:
+        ai_result = analyze_with_ai(timeline, alerts)
+
+    pdf_bytes = generate_clinical_report(timeline, ai_result)
+
+    return Response(
+        content=pdf_bytes,
+        media_type="application/pdf",
+        headers={
+            "Content-Disposition": f'attachment; filename="chronoshealth-{patient_id}.pdf"'
+        },
+    )

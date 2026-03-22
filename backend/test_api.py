@@ -82,6 +82,13 @@ assert len(ai["recommendations"]) >= 2
 print(f"     Risk: {ai['risk_level']}")
 print(f"     Cause: {ai['primary_cause']}")
 
+# PDF report
+r = requests.post(f"{BASE}/patient/sarah/report", timeout=120)
+assert r.status_code == 200, f"Report: HTTP {r.status_code}"
+assert r.headers.get("content-type", "").startswith("application/pdf"), r.headers
+assert r.content[:4] == b"%PDF", "Response is not a PDF"
+print("  ✓ PDF report")
+
 print("\n" + "=" * 50)
 print("ALL API TESTS PASSED ✓")
 print("=" * 50)

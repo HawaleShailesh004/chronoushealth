@@ -1,0 +1,15 @@
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.header {
+  margin-bottom: 24px;
+}
+
+.title {
+  color: var(--color-primary);
+  font-size: 1.75rem;
+  font-weight: 700;
+}
