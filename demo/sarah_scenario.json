@@ -1,0 +1,11 @@
+{
+  "scenario_id": "sarah_demo",
+  "description": "Pre-built demo scenario (safety net for demos)",
+  "patient": {
+    "id": "sarah",
+    "display_name": "Sarah"
+  },
+  "timeline": [],
+  "alerts": [],
+  "ai_summary": ""
+}
