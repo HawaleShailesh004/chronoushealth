@@ -1,6 +1,6 @@
 {
   "patient_id": "james",
-  "device": "Synthetic Wearable (ChronosHealth Demo)",
+  "device": "Synthetic Wearable (Nadi Demo)",
   "generated_at": "2026-03-22T21:42:25.584312",
   "days": 30,
   "drift_start_day": 24,

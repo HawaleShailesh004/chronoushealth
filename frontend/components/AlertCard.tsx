@@ -18,10 +18,10 @@ export function AlertCard({
 }: Props) {
   if (!alerts.length) {
     return (
-      <div className="bg-white border border-ink-200 rounded-2xl p-4 shadow-card">
-        <div className="flex items-center gap-2 text-success-700">
-          <span className="text-base">✓</span>
-          <span className="text-sm font-semibold">
+      <div className="rounded-2xl border border-ink-200 bg-white p-5 shadow-card">
+        <div className="flex items-center gap-3">
+          <span className="text-sm font-semibold text-success-700">✓</span>
+          <span className="text-sm font-semibold leading-relaxed tracking-wide text-ink-700">
             All vitals within normal range
           </span>
         </div>
@@ -31,44 +31,45 @@ export function AlertCard({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35, delay: 0.2 }}
-      className="bg-white border border-ink-200 rounded-2xl shadow-card overflow-hidden"
+      transition={{ duration: 0.3, delay: 0.15 }}
+      className="overflow-hidden rounded-2xl border border-ink-200 bg-white shadow-card"
     >
-      <div className="flex items-center justify-between px-4 pt-4 pb-3 border-b border-ink-100">
+      <div className="flex items-center justify-between border-b border-ink-100 px-4 pb-3 pt-4">
         <div>
-          <h3 className="text-[13px] font-semibold text-ink-950 font-display">
+          <h3 className="font-display text-sm font-semibold text-ink-950">
             Health Drift Detected
           </h3>
-          <p className="text-[11px] text-ink-400 font-mono mt-0.5">
-            {alerts.length} metric{alerts.length > 1 ? 's' : ''} outside baseline
+          <p className="mt-0.5 font-mono text-xs text-ink-400">
+            {alerts.length} metric{alerts.length > 1 ? 's' : ''} outside
+            baseline
           </p>
         </div>
         <SeverityBadge severity={overallSeverity} />
       </div>
 
-      <div className="p-3 space-y-2">
+      <div className="space-y-3 p-4">
         {alerts.map((alert, i) => (
           <motion.div
             key={alert.metric}
-            initial={{ opacity: 0, x: -8 }}
+            initial={{ opacity: 0, x: -6 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.1 * i + 0.25 }}
-            className="flex items-center justify-between px-3 py-2.5 bg-ink-50 border border-ink-100 rounded-xl"
+            transition={{ delay: 0.08 * i + 0.2 }}
+            className="flex items-center justify-between rounded-xl border border-ink-100 bg-ink-50 px-4 py-3.5"
           >
             <div>
-              <p className="text-[12px] font-semibold text-ink-900">
+              <p className="text-sm font-semibold tracking-wide text-ink-900">
                 {alert.metric_name}
               </p>
-              <p className="text-[10px] text-ink-400 font-mono mt-0.5">
+              <p className="mt-1 font-mono text-[10px] tracking-wide text-ink-400">
                 Baseline: {alert.baseline_mean} {alert.unit}
               </p>
             </div>
             <div className="text-right">
               <p
                 className={cn(
-                  'text-[15px] font-mono font-semibold leading-none',
+                  'font-mono text-[15px] font-semibold leading-none tracking-tight',
                   alert.severity === 'HIGH' || alert.severity === 'EMERGENCY'
                     ? 'text-danger-600'
                     : 'text-warning-700'
@@ -77,7 +78,7 @@ export function AlertCard({
                 {alert.direction_symbol}
                 {alert.deviation_pct}%
               </p>
-              <p className="text-[10px] text-ink-400 font-mono mt-1">
+              <p className="mt-1.5 font-mono text-[10px] tracking-wide text-ink-400">
                 {alert.current_value} {alert.unit}
               </p>
             </div>
@@ -85,23 +86,22 @@ export function AlertCard({
         ))}
       </div>
 
-      <div className="px-3 pb-3">
+      <div className="px-4 pb-4">
         <button
           type="button"
           onClick={onAnalyze}
           disabled={loading}
           className={cn(
-            'w-full py-3 rounded-xl text-[13px] font-semibold font-display',
-            'transition-all duration-200 flex items-center justify-center gap-2',
+            'flex w-full items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold transition-all duration-200',
             loading
-              ? 'bg-ink-100 text-ink-400 cursor-not-allowed'
+              ? 'cursor-not-allowed bg-ink-100 text-ink-400'
               : 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-blue active:scale-[0.98]'
           )}
         >
           {loading ? (
             <>
               <svg
-                className="animate-spin w-4 h-4"
+                className="h-4 w-4 animate-spin"
                 viewBox="0 0 24 24"
                 fill="none"
                 aria-hidden
@@ -123,10 +123,7 @@ export function AlertCard({
               Analyzing all health data…
             </>
           ) : (
-            <>
-              <span className="text-sm">→</span>
-              Ask ChronosHealth AI
-            </>
+            'Ask Nadi AI →'
           )}
         </button>
       </div>

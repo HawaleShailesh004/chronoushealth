@@ -1,6 +1,7 @@
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
+  // TS/TSX only — avoids Tailwind incremental scan of deleted .js files (ENOENT)
   content: [
     './pages/**/*.{ts,tsx,mdx}',
     './components/**/*.{ts,tsx,mdx}',

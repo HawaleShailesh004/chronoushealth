@@ -165,7 +165,7 @@ export const SEVERITY_CONFIG = {
     textColor: 'text-danger-700',
     bgColor: 'bg-danger-50',
     borderColor: 'border-danger-100',
-    dotColor: 'bg-danger-500',
+    dotColor: 'bg-danger-600',
   },
   EMERGENCY: {
     label: 'Emergency',

@@ -54,7 +54,7 @@ function riskLevelStatStyle(severity: string) {
     case 'MODERATE':
       return { color: 'text-warning-700', attention: undefined };
     case 'LOW':
-      return { color: 'text-blue-700', attention: undefined };
+      return { color: 'text-ink-700', attention: undefined };
     default:
       return { color: 'text-success-700', attention: undefined };
   }
@@ -124,23 +124,23 @@ const DoctorDashboard: NextPage = () => {
   return (
     <>
       <Head>
-        <title>ChronosHealth — Physician Panel</title>
+        <title>Nadi — Physician Panel</title>
       </Head>
 
       <div className="min-h-screen bg-ink-50">
         <Navbar role="doctor" />
 
-        <div className="max-w-[1200px] mx-auto px-6 py-6 grid grid-cols-1 md:grid-cols-[minmax(240px,280px)_1fr] gap-6 min-h-[calc(100vh-56px)]">
+        <div className="mx-auto grid min-h-[calc(100vh-56px)] max-w-[1200px] grid-cols-1 gap-8 px-8 py-10 md:grid-cols-[minmax(240px,280px)_1fr] md:gap-10">
           <div>
-            <div className="flex items-center justify-between mb-3 px-1 gap-2">
-              <p className="text-[10px] font-mono font-semibold uppercase tracking-[0.08em] text-ink-400">
+            <div className="mb-4 flex items-center justify-between gap-2 px-1">
+              <p className="font-mono text-[10px] font-semibold uppercase tracking-label text-ink-400">
                 Patient Roster
               </p>
-              <span className="text-[9px] font-mono text-ink-300 whitespace-nowrap">
+              <span className="whitespace-nowrap font-mono text-[10px] tracking-wide text-ink-400">
                 sorted by risk
               </span>
             </div>
-            <div className="space-y-2">
+            <div className="space-y-3">
               {patients.map((p, i) => (
                 <motion.button
                   key={p.id}
@@ -150,18 +150,17 @@ const DoctorDashboard: NextPage = () => {
                   transition={{ delay: i * 0.07, duration: 0.3 }}
                   onClick={() => selectPatient(p)}
                   className={cn(
-                    'w-full text-left px-3.5 py-3 rounded-xl border transition-all duration-150',
-                    'flex items-center justify-between gap-2',
+                    'flex w-full items-center justify-between gap-3 rounded-xl border px-4 py-3.5 text-left transition-all duration-150',
                     selected?.id === p.id
                       ? 'bg-blue-50 border-blue-100 shadow-sm'
                       : 'bg-white border-ink-200 hover:border-ink-300 hover:shadow-sm'
                   )}
                 >
                   <div className="min-w-0">
-                    <p className="text-[13px] font-semibold text-ink-950 font-display truncate">
+                    <p className="truncate font-display text-sm font-semibold tracking-[-0.01em] text-ink-950">
                       {p.name}
                     </p>
-                    <p className="text-[10px] font-mono text-ink-400 mt-0.5">
+                    <p className="mt-1 font-mono text-[10px] tracking-wide text-ink-400">
                       {p.age}
                       {p.gender} · {p.alertData?.alert_count ?? 0} alert
                       {(p.alertData?.alert_count ?? 0) !== 1 ? 's' : ''}
@@ -183,14 +182,14 @@ const DoctorDashboard: NextPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.25 }}
-                className="flex flex-col gap-5"
+                className="flex flex-col gap-8"
               >
-                <div className="flex items-start justify-between gap-4 flex-wrap">
+                <div className="flex flex-wrap items-start justify-between gap-6">
                   <div>
-                    <h1 className="font-display text-[24px] font-800 text-ink-950 tracking-tight leading-none mb-1">
+                    <h1 className="mb-2 font-display text-2xl font-800 leading-none tracking-[-0.02em] text-ink-950">
                       Pre-Appointment Brief
                     </h1>
-                    <p className="text-[12px] font-mono text-ink-400">
+                    <p className="font-mono text-xs tracking-wide text-ink-400">
                       {selected.name} · {selected.age}
                       {selected.gender} · Today
                     </p>
@@ -198,7 +197,7 @@ const DoctorDashboard: NextPage = () => {
                   <button
                     type="button"
                     onClick={() => router.push(`/patient?id=${selected.id}`)}
-                    className="px-4 py-2 bg-blue-600 text-white text-[12px] font-semibold font-display rounded-xl hover:bg-blue-700 transition-colors hover:shadow-blue shrink-0"
+                    className="shrink-0 rounded-xl bg-blue-600 px-5 py-2.5 font-display text-sm font-semibold tracking-wide text-white transition-colors hover:bg-blue-700 hover:shadow-blue"
                   >
                     Full Dashboard →
                   </button>
@@ -219,7 +218,7 @@ const DoctorDashboard: NextPage = () => {
                       color:
                         ad.alert_count > 0
                           ? 'text-danger-600'
-                          : 'text-success-600',
+                          : 'text-success-700',
                     },
                     {
                       label: 'Risk Level',
@@ -230,13 +229,13 @@ const DoctorDashboard: NextPage = () => {
                     {
                       label: 'Data Sources',
                       value: '3',
-                      color: 'text-blue-600',
+                      color: 'text-ink-950',
                     },
                   ];
                   return (
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
                       {briefStats.map((stat) => (
-                        <Card key={stat.label} className="p-4 text-center">
+                        <Card key={stat.label} className="p-6 text-center">
                           {stat.attention ? (
                             <motion.p
                               className={cn(
@@ -273,7 +272,7 @@ const DoctorDashboard: NextPage = () => {
                               {stat.value}
                             </p>
                           )}
-                          <p className="text-[10px] font-mono text-ink-400 uppercase tracking-wide">
+                          <p className="font-mono text-[10px] uppercase tracking-label text-ink-400">
                             {stat.label}
                           </p>
                         </Card>
@@ -286,17 +285,21 @@ const DoctorDashboard: NextPage = () => {
                   <Card className="p-6 flex items-center justify-center h-32">
                     <div className="flex items-center gap-3 text-ink-400">
                       <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
-                      <span className="text-[13px] font-mono">
+                      <span className="font-mono text-sm">
                         Loading clinical brief…
                       </span>
                     </div>
                   </Card>
                 ) : selected.brief?.ai_assessment ? (
-                  <Card animate delay={0.1} className="p-5 border-l-[4px] border-l-blue-600">
-                    <p className="text-[10px] font-mono font-semibold uppercase tracking-[0.1em] text-blue-600 mb-3">
+                  <Card
+                    animate
+                    delay={0.1}
+                    className="border-l-[4px] border-l-blue-600 p-6"
+                  >
+                    <p className="mb-4 font-mono text-[10px] font-semibold uppercase tracking-label text-blue-600">
                       AI Pre-Appointment Brief
                     </p>
-                    <p className="text-[14px] text-ink-600 leading-[1.72]">
+                    <p className="text-sm leading-[1.75] tracking-wide text-ink-700">
                       {selected.brief.ai_assessment.clinical_assessment}
                     </p>
                   </Card>
@@ -309,8 +312,8 @@ const DoctorDashboard: NextPage = () => {
                 )}
 
                 {selected.brief?.ai_assessment?.recommendations && (
-                  <Card animate delay={0.15} className="p-5">
-                    <p className="text-[10px] font-mono font-semibold uppercase tracking-[0.08em] text-ink-400 mb-4">
+                  <Card animate delay={0.15} className="p-6">
+                    <p className="mb-5 font-mono text-[10px] font-semibold uppercase tracking-label text-ink-400">
                       Suggested Discussion Points
                     </p>
                     <div className="divide-y divide-ink-100">
@@ -321,12 +324,12 @@ const DoctorDashboard: NextPage = () => {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: i * 0.08 }}
-                            className="flex items-start gap-3 py-3 first:pt-0 last:pb-0"
+                            className="flex items-start gap-4 py-4 first:pt-0 last:pb-0"
                           >
-                            <span className="font-mono text-[12px] font-bold text-blue-600 flex-shrink-0 mt-0.5">
+                            <span className="mt-0.5 flex-shrink-0 font-mono text-xs font-bold text-ink-500">
                               →
                             </span>
-                            <span className="text-[13px] text-ink-600 leading-snug">
+                            <span className="text-sm leading-snug text-ink-700">
                               {rec}
                             </span>
                           </motion.div>

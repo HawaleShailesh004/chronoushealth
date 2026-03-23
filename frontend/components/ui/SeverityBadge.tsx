@@ -3,7 +3,7 @@ import type { AlertsResponse } from '@/lib/api';
 
 type Severity = AlertsResponse['overall_severity'];
 
-const config: Record<
+const cfg: Record<
   Severity,
   { label: string; cls: string }
 > = {
@@ -36,17 +36,18 @@ export function SeverityBadge({
   severity: Severity;
   className?: string;
 }) {
-  const { label, cls } = config[severity] ?? config.NONE;
+  const { label, cls } = cfg[severity] ?? cfg.NONE;
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 text-[10px] font-mono font-semibold',
-        'tracking-wide uppercase px-2.5 py-1 rounded-full border',
+        'inline-flex items-center gap-1.5',
+        'text-[10px] font-mono font-semibold uppercase tracking-[0.12em]',
+        'rounded-full border px-3 py-1.5',
         cls,
         className
       )}
     >
-      <span className="w-1.5 h-1.5 rounded-full bg-current opacity-80" />
+      <span className="h-1.5 w-1.5 rounded-full bg-current opacity-80" />
       {label}
     </span>
   );

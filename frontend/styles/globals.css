@@ -3,27 +3,31 @@
 @tailwind utilities;
 
 :root {
-  --font-bricolage: 'Bricolage Grotesque', system-ui, sans-serif;
-  --font-geist: 'Bricolage Grotesque', system-ui, sans-serif;
-  --font-jetbrains: 'JetBrains Mono', ui-monospace, monospace;
+  --font-jakarta: 'Plus Jakarta Sans';
+  --font-jetbrains: 'JetBrains Mono';
 }
 
 @layer base {
-  * {
+  *,
+  *::before,
+  *::after {
     box-sizing: border-box;
   }
 
   html {
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
   }
 
   body {
-    @apply bg-ink-50 text-ink-950 font-body;
+    @apply bg-ink-50 text-ink-950;
+    font-family: var(--font-jakarta), system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
   }
 
   ::-webkit-scrollbar {
-    width: 6px;
+    width: 5px;
   }
   ::-webkit-scrollbar-track {
     @apply bg-ink-100;
@@ -37,6 +41,11 @@
 }
 
 @layer utilities {
+  /* Uppercase meta labels — extra air for a calmer dashboard */
+  .tracking-label {
+    letter-spacing: 0.14em;
+  }
+
   .animate-in {
     animation: animate-in 0.3s ease both;
   }

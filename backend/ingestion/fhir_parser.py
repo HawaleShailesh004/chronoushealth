@@ -1,5 +1,5 @@
 """
-FHIR Parser — extracts only what ChronosHealth needs from Synthea output.
+FHIR Parser — extracts only what Nadi needs from Synthea output.
 Synthea produces HL7 FHIR R4 Bundle format.
 We extract: Patient demographics, Conditions, Observations (labs),
             MedicationRequests.

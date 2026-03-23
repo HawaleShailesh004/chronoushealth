@@ -31481,9 +31481,9 @@
       }
     ],
     "data_sources": {
-      "wearable": "Synthetic Wearable (ChronosHealth Demo)",
+      "wearable": "Synthetic Wearable (Nadi Demo)",
       "clinical": "Synthea FHIR R4",
-      "medications": "ChronosHealth medication log"
+      "medications": "Nadi medication log"
     },
     "wearable_days": 30
   },

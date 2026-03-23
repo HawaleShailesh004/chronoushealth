@@ -1,5 +1,5 @@
 """
-ChronosHealth FastAPI Backend.
+Nadi FastAPI Backend.
 
 Endpoints:
 GET  /health                         → system health check
@@ -33,7 +33,7 @@ _BACKEND = Path(__file__).resolve().parent
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Pre-load Sarah's data into Pinecone on startup."""
-    print("ChronosHealth API starting...")
+    print("Nadi API starting...")
     try:
         timeline = load_patient_data("sarah")
         store_patient_history(timeline)
@@ -45,7 +45,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="ChronosHealth API",
+    title="Nadi API",
     description="Universal Health Context Engine",
     version="1.0.0",
     lifespan=lifespan,
@@ -100,7 +100,7 @@ def health_check():
     """System health check — call this first to verify API is running."""
     return {
         "status": "ok",
-        "service": "ChronosHealth API",
+        "service": "Nadi API",
         "version": "1.0.0",
     }
 
@@ -218,6 +218,6 @@ def get_report(patient_id: str):
         content=pdf_bytes,
         media_type="application/pdf",
         headers={
-            "Content-Disposition": f'attachment; filename="chronoshealth-{patient_id}.pdf"'
+            "Content-Disposition": f'attachment; filename="nadi-{patient_id}.pdf"'
         },
     )

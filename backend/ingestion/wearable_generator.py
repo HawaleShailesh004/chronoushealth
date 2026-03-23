@@ -114,7 +114,7 @@ def generate_wearable_timeline(
 
     return {
         "patient_id": patient_id,
-        "device": "Synthetic Wearable (ChronosHealth Demo)",
+        "device": "Synthetic Wearable (Nadi Demo)",
         "generated_at": datetime.now().isoformat(),
         "days": days,
         "drift_start_day": drift_start_day,

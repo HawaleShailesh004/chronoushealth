@@ -282,7 +282,7 @@ export default function HealthTimeline({
 
   if (!wearableTimeline?.length) {
     return (
-      <div className="py-10 text-center text-sm text-ink-400 font-mono">
+      <div className="py-12 text-center font-mono text-sm tracking-wide text-ink-400">
         Loading wearable data…
       </div>
     );

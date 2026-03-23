@@ -1,5 +1,5 @@
 """
-RAG Engine — the intelligence layer of ChronosHealth.
+RAG Engine — the intelligence layer of Nadi.
 
 Architecture:
 1. Patient timeline + alerts → build_medical_context() → plain text context
@@ -28,7 +28,7 @@ _backend_dir = Path(__file__).resolve().parent.parent
 load_dotenv(_backend_dir / ".env")
 load_dotenv()
 
-INDEX_NAME = "chronoshealth-v1"
+INDEX_NAME = "nadi-v1"
 EMBEDDING_MODEL = "text-embedding-3-small"  # 1536 dims, cheapest, fast
 REASONING_MODEL = "gpt-4o-mini"  # Sufficient for structured JSON
 

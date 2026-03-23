@@ -190,7 +190,7 @@ def build_patient_timeline(
         "data_sources": {
             "wearable": wearable_data.get("device", "synthetic"),
             "clinical": "Synthea FHIR R4",
-            "medications": "ChronosHealth medication log",
+            "medications": "Nadi medication log",
         },
         "wearable_days": len(clean_wearable),
     }

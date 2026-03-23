@@ -28,7 +28,7 @@ const Landing: NextPage = () => {
   return (
     <>
       <Head>
-        <title>ChronosHealth — Universal Health Context Engine</title>
+        <title>Nadi — Universal Health Context Engine</title>
         <meta
           name="description"
           content="Medical AI with full patient context"
@@ -38,34 +38,34 @@ const Landing: NextPage = () => {
       <div className="min-h-screen bg-ink-50">
         <Navbar />
 
-        <div className="min-h-[calc(100vh-56px)] grid grid-cols-1 lg:grid-cols-2">
+        <div className="grid min-h-[calc(100vh-56px)] grid-cols-1 lg:grid-cols-2">
           <motion.div
             variants={stagger}
             initial="initial"
             animate="animate"
-            className="flex flex-col justify-center px-8 py-16 lg:px-16 lg:py-24 border-r border-ink-200"
+            className="flex flex-col justify-center border-r border-ink-200 px-10 py-20 lg:px-20 lg:py-28"
           >
-            <motion.div variants={fadeUp} className="mb-5">
-              <span className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-600 border border-blue-100 rounded-full text-[11px] font-mono font-semibold uppercase tracking-wider">
-                <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse-dot" />
+            <motion.div variants={fadeUp} className="mb-8">
+              <span className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-blue-600">
+                <span className="h-1.5 w-1.5 animate-pulse-dot rounded-full bg-blue-600" />
                 Universal Health Context Engine
               </span>
             </motion.div>
 
             <motion.h1
               variants={fadeUp}
-              className="font-display text-[46px] lg:text-[54px] font-800 text-ink-950 leading-[1.07] tracking-[-0.03em] mb-4"
+              className="mb-6 font-display text-[46px] font-800 leading-[1.08] tracking-[-0.03em] text-ink-950 lg:text-[54px]"
             >
               Medical AI needs
               <br />
-              <span className="text-blue-600 italic font-display">context</span>,
+              <span className="font-display italic text-blue-600">context</span>,
               <br />
               not guesses.
             </motion.h1>
 
             <motion.p
               variants={fadeUp}
-              className="text-[16px] text-ink-500 leading-relaxed mb-3 font-light max-w-md"
+              className="mb-6 max-w-md text-base font-normal leading-[1.7] tracking-wide text-ink-700"
             >
               Your wearable, your records, and your medications — finally unified
               into one reasoning engine that understands your full health story.
@@ -73,23 +73,23 @@ const Landing: NextPage = () => {
 
             <motion.blockquote
               variants={fadeUp}
-              className="pl-4 border-l-2 border-blue-200 text-[13px] text-ink-400 italic mb-10 leading-relaxed max-w-sm font-body"
+              className="mb-12 max-w-sm border-l-2 border-blue-200 pl-5 font-body text-sm italic leading-[1.7] tracking-wide text-ink-500"
             >
               &quot;Same heart rate spike. Standalone AI: possible cardiac event.
-              ChronosHealth: medication adjustment. No emergency.&quot;
+              Nadi: medication adjustment. No emergency.&quot;
             </motion.blockquote>
 
-            <motion.div variants={fadeUp} className="flex gap-8 mb-10">
+            <motion.div variants={fadeUp} className="mb-12 flex gap-12">
               {[
                 { n: '3', l: 'Data streams unified' },
                 { n: '30', l: 'Days of context' },
                 { n: '48h', l: 'Drift detection' },
               ].map((s) => (
                 <div key={s.n}>
-                  <div className="font-mono text-[26px] font-medium text-blue-600 leading-none">
+                  <div className="font-mono text-[28px] font-medium leading-none text-blue-600">
                     {s.n}
                   </div>
-                  <div className="text-[11px] text-ink-400 mt-1 font-mono">
+                  <div className="mt-2 font-mono text-[10px] tracking-wide text-ink-400">
                     {s.l}
                   </div>
                 </div>
@@ -98,19 +98,19 @@ const Landing: NextPage = () => {
 
             <motion.div
               variants={fadeUp}
-              className="flex flex-col sm:flex-row gap-3 mb-10"
+              className="mb-12 flex flex-col gap-4 sm:flex-row"
             >
               <button
                 type="button"
                 onClick={() => router.push('/patient?id=sarah')}
-                className="flex items-center gap-3 px-5 py-3.5 bg-blue-600 text-white rounded-xl text-[14px] font-semibold font-display hover:bg-blue-700 transition-all duration-200 hover:shadow-blue active:scale-[0.98]"
+                className="flex items-center gap-3 rounded-xl bg-blue-600 px-6 py-4 font-display text-sm font-semibold tracking-wide text-white transition-all duration-200 hover:bg-blue-700 hover:shadow-blue active:scale-[0.98]"
               >
-                <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center text-[16px]">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/20 text-base">
                   🧬
                 </div>
                 <div className="text-left">
                   <div>Patient View</div>
-                  <div className="text-[11px] opacity-70 font-normal">
+                  <div className="text-[10px] font-normal opacity-70">
                     Sarah M., 42F — Demo
                   </div>
                 </div>
@@ -118,14 +118,14 @@ const Landing: NextPage = () => {
               <button
                 type="button"
                 onClick={() => router.push('/doctor')}
-                className="flex items-center gap-3 px-5 py-3.5 bg-white text-ink-900 border border-ink-200 rounded-xl text-[14px] font-semibold font-display hover:border-ink-300 hover:shadow-card-hover transition-all duration-200 active:scale-[0.98]"
+                className="flex items-center gap-3 rounded-xl border border-ink-200 bg-white px-6 py-4 font-display text-sm font-semibold tracking-wide text-ink-900 transition-all duration-200 hover:border-ink-300 hover:shadow-card-hover active:scale-[0.98]"
               >
-                <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-[16px]">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-base">
                   🏥
                 </div>
                 <div className="text-left">
                   <div>Physician Panel</div>
-                  <div className="text-[11px] text-ink-400 font-normal">
+                  <div className="text-[10px] font-normal text-ink-400">
                     Dr. Patel — Roster
                   </div>
                 </div>
@@ -133,7 +133,7 @@ const Landing: NextPage = () => {
             </motion.div>
           </motion.div>
 
-          <div className="hidden lg:flex flex-col justify-center gap-4 px-12 py-16 bg-gradient-to-br from-blue-50 via-ink-50 to-white">
+          <div className="hidden flex-col justify-center gap-6 bg-gradient-to-br from-blue-50 via-ink-50 to-white px-14 py-20 lg:flex">
             {[
               {
                 delay: 0.1,
@@ -141,18 +141,18 @@ const Landing: NextPage = () => {
                 border: '',
                 children: (
                   <div>
-                    <div className="flex items-baseline gap-2 mb-1">
-                      <span className="font-mono text-[32px] font-medium text-ink-950">
+                    <div className="mb-1 flex items-baseline gap-2">
+                      <span className="font-mono text-[28px] font-medium text-ink-950">
                         88
                       </span>
-                      <span className="font-mono text-[12px] text-ink-400">
+                      <span className="font-mono text-xs text-ink-400">
                         bpm
                       </span>
-                      <span className="ml-auto text-[10px] font-mono font-semibold bg-danger-50 text-danger-700 border border-danger-100 px-2 py-0.5 rounded-md">
+                      <span className="ml-auto rounded-md border border-danger-100 bg-danger-50 px-2 py-0.5 font-mono text-[10px] font-semibold tracking-wide text-danger-700">
                         ↑ +29.8%
                       </span>
                     </div>
-                    <p className="text-[10px] font-mono text-ink-400">
+                    <p className="font-mono text-[10px] tracking-wide text-ink-400">
                       Baseline: 63.0 bpm · 28-day avg
                     </p>
                   </div>
@@ -164,11 +164,11 @@ const Landing: NextPage = () => {
                 border: 'border-l-[3px] border-l-warning-500',
                 children: (
                   <div>
-                    <p className="text-[12px] text-ink-600 leading-relaxed mb-3">
+                    <p className="mb-4 text-sm leading-[1.7] tracking-wide text-ink-700">
                       HR +29.8%, HRV −31.3%, Sleep −22.1% — all began 48h after
                       Metformin 500mg initiation on Mar 19.
                     </p>
-                    <div className="flex flex-wrap gap-1.5">
+                    <div className="flex flex-wrap gap-2">
                       {[
                         'wearable_30d',
                         'fhir_conditions',
@@ -176,7 +176,7 @@ const Landing: NextPage = () => {
                       ].map((s) => (
                         <span
                           key={s}
-                          className="text-[9px] font-mono px-2 py-0.5 bg-ink-50 border border-ink-100 text-ink-400 rounded-md"
+                          className="rounded-md border border-ink-200 bg-ink-100 px-2.5 py-1 font-mono text-[10px] tracking-wide text-ink-600"
                         >
                           {s}
                         </span>
@@ -190,8 +190,8 @@ const Landing: NextPage = () => {
                 label: 'AI Assessment',
                 border: '',
                 children: (
-                  <p className="text-[12px] text-ink-600 leading-relaxed">
-                    <strong className="text-ink-950 font-semibold">
+                  <p className="text-sm leading-[1.7] tracking-wide text-ink-700">
+                    <strong className="font-semibold tracking-tight text-ink-950">
                       Not a cardiac emergency.
                     </strong>{' '}
                     Consistent with Metformin autonomic adjustment. SpO2 stable
@@ -209,9 +209,9 @@ const Landing: NextPage = () => {
                   delay: card.delay,
                   ease: easeOut,
                 }}
-                className={`bg-white border border-ink-200 rounded-2xl p-4 shadow-card ${card.border}`}
+                className={`rounded-2xl border border-ink-200 bg-white p-6 shadow-card ${card.border}`}
               >
-                <p className="text-[9px] font-mono font-semibold uppercase tracking-[0.08em] text-ink-400 mb-3">
+                <p className="mb-4 font-mono text-[10px] font-semibold uppercase tracking-label text-ink-400">
                   {card.label}
                 </p>
                 {card.children}

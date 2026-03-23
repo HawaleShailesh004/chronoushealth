@@ -8,30 +8,30 @@ interface Props {
   unit: string;
   delta: string;
   deltaDir: 'up' | 'down';
-  severity: 'crit' | 'warn' | 'ok' | 'blue';
+  severity: 'crit' | 'warn' | 'ok' | 'neutral';
   delay?: number;
 }
 
-const severityConfig = {
+const severityMap = {
   crit: {
     value: 'text-danger-600',
-    bar: 'bg-danger-500',
-    delta: 'bg-danger-50 text-danger-700 border-danger-100',
+    bar: 'bg-danger-600',
+    delta: 'border-danger-100 bg-danger-50 text-danger-700',
   },
   warn: {
     value: 'text-warning-700',
     bar: 'bg-warning-500',
-    delta: 'bg-warning-50 text-warning-700 border-warning-100',
+    delta: 'border-warning-100 bg-warning-50 text-warning-700',
   },
   ok: {
     value: 'text-success-700',
     bar: 'bg-success-500',
-    delta: 'bg-success-50 text-success-700 border-success-100',
+    delta: 'border-success-100 bg-success-50 text-success-700',
   },
-  blue: {
+  neutral: {
     value: 'text-blue-600',
-    bar: 'bg-blue-500',
-    delta: 'bg-blue-50 text-blue-700 border-blue-100',
+    bar: 'bg-blue-600',
+    delta: 'border-blue-100 bg-blue-50 text-blue-700',
   },
 };
 
@@ -47,7 +47,7 @@ function AnimatedNumber({
 
   useEffect(() => {
     const controls = animate(0, target, {
-      duration: 1.2,
+      duration: 1.1,
       delay,
       ease: [0.25, 0.46, 0.45, 0.94] as const,
       onUpdate: (v) => setDisplay(v),
@@ -67,46 +67,47 @@ export function VitalCard({
   severity,
   delay = 0,
 }: Props) {
-  const cfg = severityConfig[severity];
+  const s = severityMap[severity];
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{
-        duration: 0.35,
+        duration: 0.3,
         delay,
         ease: [0.25, 0.46, 0.45, 0.94] as const,
       }}
-      className="relative bg-white border border-ink-200 rounded-2xl p-4 shadow-card hover:shadow-card-hover transition-shadow overflow-hidden"
+      className="relative overflow-hidden rounded-2xl border border-ink-200 bg-white p-5 shadow-card"
     >
       <div
         className={cn(
           'absolute bottom-0 left-0 right-0 h-[3px] rounded-b-2xl',
-          cfg.bar
+          s.bar
         )}
       />
 
-      <p className="text-[10px] font-mono font-medium uppercase tracking-[0.08em] text-ink-400 mb-2">
+      <p className="mb-3 font-mono text-[10px] font-semibold uppercase tracking-label text-ink-400">
         {label}
       </p>
 
       <div
         className={cn(
-          'text-[30px] font-mono font-medium leading-none mb-1',
-          cfg.value
+          'mb-2 font-mono text-[28px] font-medium leading-none tracking-tight',
+          s.value
         )}
       >
         <AnimatedNumber target={value} delay={delay + 0.1} />
       </div>
 
-      <p className="text-[10px] font-mono text-ink-400 mb-3">{unit}</p>
+      <p className="mb-4 font-mono text-xs tracking-wide text-ink-400">
+        {unit}
+      </p>
 
       <span
         className={cn(
-          'inline-flex items-center gap-1 text-[9px] font-mono font-semibold',
-          'px-2 py-0.5 rounded-md border uppercase tracking-wide',
-          cfg.delta
+          'inline-flex items-center gap-1 rounded-md border px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wide',
+          s.delta
         )}
       >
         {deltaDir === 'up' ? '↑' : '↓'} {delta}

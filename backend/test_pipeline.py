@@ -24,7 +24,7 @@ from ingestion.wearable_generator import load_wearable_data
 from engine.schema_mapper import build_patient_timeline
 
 print("=" * 60)
-print("CHRONOSHEALTH PIPELINE TEST")
+print("NADI PIPELINE TEST")
 print("=" * 60)
 
 # ── STEP 1: Parse FHIR ────────────────────────────────────────

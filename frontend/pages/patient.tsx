@@ -91,7 +91,7 @@ function buildVitals(timeline: PatientTimeline) {
       unit: '% oxygen sat.',
       delta: pctAbsChange(spo2.b, spo2.c),
       deltaDir: spo2.c >= spo2.b ? ('up' as const) : ('down' as const),
-      severity: 'blue' as const,
+      severity: 'neutral' as const,
       delay: 0.2,
     },
   ];
@@ -152,7 +152,7 @@ const PatientDashboard: NextPage = () => {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `chronoshealth-${patientId}.pdf`;
+      a.download = `nadi-${patientId}.pdf`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -196,7 +196,7 @@ const PatientDashboard: NextPage = () => {
                 />
               </svg>
             </div>
-            <p className="text-[13px] font-mono text-ink-400">
+            <p className="font-mono text-xs text-ink-400">
               Loading patient data…
             </p>
           </motion.div>
@@ -215,8 +215,8 @@ const PatientDashboard: NextPage = () => {
             <h2 className="font-display font-700 text-ink-950 mb-2">
               Connection Error
             </h2>
-            <p className="text-[13px] text-ink-500 mb-4">{error}</p>
-            <code className="text-[11px] bg-ink-50 border border-ink-100 px-3 py-2 rounded-lg text-ink-400 block">
+            <p className="mb-4 text-sm text-ink-500">{error}</p>
+            <code className="block rounded-lg border border-ink-100 bg-ink-50 px-3 py-2 font-mono text-xs text-ink-400">
               uvicorn main:app --reload --port 8000
             </code>
           </Card>
@@ -230,7 +230,7 @@ const PatientDashboard: NextPage = () => {
   return (
     <>
       <Head>
-        <title>ChronosHealth — {timeline.patient_name}</title>
+        <title>Nadi — {timeline.patient_name}</title>
       </Head>
 
       <div className="min-h-screen bg-ink-50">
@@ -240,11 +240,11 @@ const PatientDashboard: NextPage = () => {
           role="patient"
         />
 
-        <div className="max-w-[1200px] mx-auto px-6 py-6 grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6">
-          <div className="flex flex-col gap-5">
-            <Card animate delay={0} className="p-4">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center text-white font-display font-700 text-[15px] flex-shrink-0">
+        <div className="mx-auto grid max-w-[1200px] grid-cols-1 gap-8 px-8 py-10 lg:grid-cols-[1fr_380px] lg:gap-10">
+          <div className="flex flex-col gap-8">
+            <Card animate delay={0} className="p-6">
+              <div className="flex items-center gap-6">
+                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-blue-600 font-display text-sm font-700 text-white">
                   {timeline.patient_name
                     .split(' ')
                     .map((n) => n[0])
@@ -252,58 +252,49 @@ const PatientDashboard: NextPage = () => {
                     .slice(0, 2)}
                 </div>
                 <div className="min-w-0">
-                  <h1 className="font-display text-[20px] font-700 text-ink-950 tracking-tight leading-none mb-1">
+                  <h1 className="mb-2 font-display text-lg font-700 leading-none tracking-[-0.02em] text-ink-950">
                     {timeline.patient_name}
                   </h1>
-                  <p className="text-[11px] font-mono text-ink-400">
+                  <p className="font-mono text-xs tracking-wide text-ink-400">
                     DOB {timeline.patient_dob} · {timeline.patient_gender} ·{' '}
                     {timeline.wearable_days} days monitored
                   </p>
                 </div>
-                <div className="ml-auto flex items-center gap-2 flex-wrap justify-end">
-                  {['Wearable', 'FHIR R4', 'Medications', 'RAG + AI'].map(
-                    (t, i) => {
-                      const colors = [
-                        'bg-success-50 text-success-700 border-success-100',
-                        'bg-blue-50 text-blue-600 border-blue-100',
-                        'bg-warning-50 text-warning-700 border-warning-100',
-                        'bg-purple-50 text-purple-700 border-purple-100',
-                      ];
-                      return (
-                        <span
-                          key={t}
-                          className={cn(
-                            'text-[9px] font-mono font-semibold uppercase tracking-wide px-2 py-0.5 rounded-md border',
-                            colors[i]
-                          )}
-                        >
-                          {t}
-                        </span>
-                      );
-                    }
-                  )}
+                <div className="ml-auto flex flex-wrap items-center justify-end gap-2.5">
+                  {['Wearable', 'FHIR R4', 'Medications'].map((t) => (
+                    <span
+                      key={t}
+                      className="rounded-md border border-ink-200 bg-ink-100 px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-ink-600"
+                    >
+                      {t}
+                    </span>
+                  ))}
                 </div>
               </div>
             </Card>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-5">
               {vitals.map((v) => (
                 <VitalCard key={v.label} {...v} />
               ))}
             </div>
 
-            <Card animate delay={0.15} className="p-5">
-              <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-                <h2 className="font-display text-[13px] font-600 text-ink-950 tracking-tight">
+            <Card animate delay={0.15} className="p-6">
+              <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+                <h2 className="font-display text-sm font-semibold tracking-[-0.01em] text-ink-950">
                   30-Day Health Timeline
                 </h2>
-                <div className="flex items-center gap-4 flex-wrap">
+                <div className="flex flex-wrap items-center gap-5">
                   {[
-                    { kind: 'dot' as const, color: 'bg-danger-500', label: 'Heart Rate' },
+                    {
+                      kind: 'dot' as const,
+                      color: 'bg-danger-600',
+                      label: 'Heart Rate',
+                    },
                     { kind: 'dot' as const, color: 'bg-blue-600', label: 'HRV' },
                     {
                       kind: 'zone' as const,
-                      color: 'bg-danger-100 border border-danger-200',
+                      color: 'border border-danger-100 bg-danger-50',
                       label: 'Normal zones',
                     },
                   ].map((l) => (
@@ -316,7 +307,7 @@ const PatientDashboard: NextPage = () => {
                           l.color
                         )}
                       />
-                      <span className="text-[10px] font-mono text-ink-400 uppercase tracking-wide">
+                      <span className="text-[10px] font-mono uppercase tracking-[0.1em] text-ink-400">
                         {l.label}
                       </span>
                     </div>
@@ -330,7 +321,7 @@ const PatientDashboard: NextPage = () => {
               />
             </Card>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               {[
                 {
                   title: 'Active Conditions',
@@ -350,35 +341,37 @@ const PatientDashboard: NextPage = () => {
                   })),
                 },
               ].map((section) => (
-                <Card key={section.title} animate delay={0.2} className="p-4">
-                  <p className="text-[10px] font-mono font-semibold uppercase tracking-[0.08em] text-ink-400 mb-3">
+                <Card key={section.title} animate delay={0.2} className="p-6">
+                  <p className="mb-4 font-mono text-[10px] font-semibold uppercase tracking-label text-ink-400">
                     {section.title}
                   </p>
-                  <div className="space-y-2 max-h-[280px] overflow-y-auto pr-1">
+                  <div className="max-h-[280px] space-y-3 overflow-y-auto pr-1">
                     {section.items.length === 0 ? (
-                      <p className="text-[12px] text-ink-400">None listed</p>
+                      <p className="text-sm leading-relaxed tracking-wide text-ink-400">
+                        None listed
+                      </p>
                     ) : (
                       section.items.map((item, i) => (
                         <div
                           key={i}
                           className={cn(
-                            'px-3 py-2.5 rounded-xl border',
+                            'rounded-xl border px-4 py-3.5',
                             item.highlight
                               ? 'bg-warning-50 border-warning-100'
                               : 'bg-ink-50 border-ink-100'
                           )}
                         >
                           <div className="flex items-center gap-2 flex-wrap">
-                            <span className="text-[12px] font-semibold text-ink-900">
+                            <span className="text-sm font-semibold tracking-wide text-ink-900">
                               {item.primary}
                             </span>
                             {'badge' in item && item.badge && (
-                              <span className="text-[9px] font-mono font-semibold uppercase px-1.5 py-0.5 bg-warning-100 text-warning-700 border border-warning-200 rounded">
+                              <span className="rounded border border-warning-100 bg-warning-50 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.1em] text-warning-700">
                                 {item.badge}
                               </span>
                             )}
                           </div>
-                          <p className="text-[10px] font-mono text-ink-400 mt-0.5">
+                          <p className="mt-1 font-mono text-[10px] tracking-wide text-ink-400">
                             {item.secondary}
                           </p>
                         </div>
@@ -389,25 +382,25 @@ const PatientDashboard: NextPage = () => {
               ))}
             </div>
 
-            <Card animate delay={0.25} className="p-4">
-              <p className="text-[10px] font-mono font-semibold uppercase tracking-[0.08em] text-ink-400 mb-3">
+            <Card animate delay={0.25} className="p-6">
+              <p className="mb-4 font-mono text-[10px] font-semibold uppercase tracking-label text-ink-400">
                 Recent Lab Results
               </p>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
                 {timeline.recent_labs.slice(0, 6).map((lab, i) => (
                   <div
                     key={i}
-                    className="px-3 py-2.5 bg-ink-50 border border-ink-100 rounded-xl"
+                    className="rounded-xl border border-ink-100 bg-ink-50 px-4 py-3.5"
                   >
-                    <p className="text-[10px] font-mono text-ink-400 mb-1">
+                    <p className="mb-1.5 font-mono text-[10px] tracking-wide text-ink-400">
                       {lab.date}
                     </p>
-                    <p className="text-[11px] font-semibold text-ink-700 mb-1 leading-tight">
+                    <p className="mb-2 text-xs font-semibold leading-snug tracking-wide text-ink-700">
                       {lab.test}
                     </p>
-                    <p className="font-mono text-[18px] font-medium text-ink-950 leading-none">
+                    <p className="font-mono text-lg font-medium leading-none text-ink-950">
                       {lab.value}
-                      <span className="text-[10px] text-ink-400 ml-1">
+                      <span className="ml-1 font-mono text-[10px] text-ink-400">
                         {lab.unit}
                       </span>
                     </p>
@@ -417,7 +410,7 @@ const PatientDashboard: NextPage = () => {
             </Card>
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-6">
             <AlertCard
               alerts={alertData.alerts}
               overallSeverity={alertData.overall_severity}
